@@ -40,21 +40,6 @@
     <Content Include="Libs/AceAddon-3.0/AceAddon-3.0.xml">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="Libs/AceBucket-3.0/AceBucket-3.0.lua">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Libs/AceBucket-3.0/AceBucket-3.0.xml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Libs/AceComm-3.0/AceComm-3.0.lua">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Libs/AceComm-3.0/AceComm-3.0.xml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Libs/AceComm-3.0/ChatThrottleLib.lua">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="Libs/AceConfig-3.0/AceConfig-3.0.lua">
       <SubType>Code</SubType>
     </Content>
@@ -181,36 +166,16 @@
     <Content Include="Libs/AceHook-3.0/AceHook-3.0.xml">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="Libs/AceLocale-3.0/AceLocale-3.0.lua">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Libs/AceLocale-3.0/AceLocale-3.0.xml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Libs/AceTab-3.0/AceTab-3.0.lua">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Libs/AceTab-3.0/AceTab-3.0.xml">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="Libs/AceTimer-3.0/AceTimer-3.0.lua">
       <SubType>Code</SubType>
     </Content>
     <Content Include="Libs/AceTimer-3.0/AceTimer-3.0.xml">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="Libs/AceSerializer-3.0/AceSerializer-3.0.lua">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Libs/AceSerializer-3.0/AceSerializer-3.0.xml">
-      <SubType>Code</SubType>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Libs\" />
     <Folder Include="Libs\AceAddon-3.0\" />
-    <Folder Include="Libs\AceBucket-3.0\" />
-    <Folder Include="Libs\AceComm-3.0\" />
     <Folder Include="Libs\AceConfig-3.0\" />
     <Folder Include="Libs\AceConfig-3.0\AceConfigCmd-3.0\" />
     <Folder Include="Libs\AceConfig-3.0\AceConfigDialog-3.0\" />
@@ -222,9 +187,6 @@
     <Folder Include="Libs\AceGUI-3.0\" />
     <Folder Include="Libs\AceGUI-3.0\widgets\" />
     <Folder Include="Libs\AceHook-3.0\" />
-    <Folder Include="Libs\AceLocale-3.0\" />
-    <Folder Include="Libs\AceSerializer-3.0\" />
-    <Folder Include="Libs\AceTab-3.0\" />
     <Folder Include="Libs\AceTimer-3.0\" />
     <Folder Include="Libs\CallbackHandler-1.0\" />
     <Folder Include="Libs\LibStub\" />
