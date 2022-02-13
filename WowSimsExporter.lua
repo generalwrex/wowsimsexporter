@@ -38,21 +38,33 @@ local options = {
 	},
 }
 
+function WowSimsExporter:ParseUnfilteredCombatLog()
 
-function WowSimsExporter:CreateCharacterStructure(type, gearIn)
-    local name, realm = UnitFullName(type)
-    local locClass, engClass, locRace, engRace, gender, name, server = GetPlayerInfoByGUID(UnitGUID(type))
-    local level = UnitLevel(type)
+end
+
+
+
+function WowSimsExporter:CreateGroupStructure()
+
+end
+
+
+function WowSimsExporter:CreateCharacterStructure(unit, gearIn)
+    local name, realm = UnitFullName(unit)
+    local locClass, engClass, locRace, engRace, gender, name, server = GetPlayerInfoByGUID(UnitGUID(unit))
+    local level = UnitLevel(unit)
 
     local character = {
         name = name,
         realm = realm,
         race = engRace,
         class = engClass,
-		level = level,
+		level = tonumber(level),
         talents = self:CreateTalentEntry(),
-        gear = gearIn
-    }
+        gear = { 
+			items = gearIn 
+			} 
+	}
 
     return character
 end
@@ -99,29 +111,31 @@ function WowSimsExporter:CreateWindow()
         end
     )
     frame:SetTitle("WowSimsExporter V" .. version .. "")
-    frame:SetStatusText("Status Bar")
-    frame:SetLayout("Flow")
+    frame:SetStatusText("Click 'Generate Data' to display exportable data")
+    frame:SetLayout("List")
 
     local jsonbox = AceGUI:Create("MultiLineEditBox")
     jsonbox:SetLabel("Copy and paste into the websites importer at https://wowsims.github.io/tbc/.")
     jsonbox:SetFullWidth(true)
-    jsonbox:SetFullHeight(true)
+    jsonbox:SetHeight(600)
     jsonbox:DisableButton(true)
     jsonbox:HighlightText()
 
-	if not(self.Json == "") then
+	if not ( self.Json == nil or self.Json == '') then
 		jsonbox:SetText(LibParse:JSONEncode(self.Json)) 
 	end
 
+	
     frame:AddChild(jsonbox)
 
     local button = AceGUI:Create("Button")
     button:SetText("Generate Data")
     button:SetWidth(200)
-	button.OnClick = function() 
-		self.Json = self:GetGearEnchantGems("player")
-		jsonbox:SetText(LibParse:JSONEncode(self.Json)) 
-	end
+	button:SetCallback("OnClick", function()
+		WowSimsExporter.Json = WowSimsExporter:GetGearEnchantGems("player")
+		jsonbox:SetText(LibParse:JSONEncode(WowSimsExporter.Json)) 
+	end)
+
     frame:AddChild(button)
 end
 
@@ -135,15 +149,15 @@ function WowSimsExporter:GetGearEnchantGems(type)
         if itemLink then
             local Id, Enchant, Gem1, Gem2, Gem3, Gem4 = self:ParseItemLink(itemLink)
 
-            table.insert(
-                gear,
-                slotNum,
-                {
-                    item = Id,
-                    enchant = Enchant,
-                    gems = {Gem1, Gem2, Gem3, Gem4}
-                }
-            )
+			item = {}
+			item.id = Id
+			item.enchant = tonumber(Enchant)
+
+			if(Gem1 or Gem2 or Gem3 or Gem4) then
+				item.gems = {tonumber(Gem1), tonumber(Gem2), tonumber(Gem3), tonumber(Gem4)}
+			end
+			gear[slotNum] = item
+
         end
     end
 

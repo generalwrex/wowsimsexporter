@@ -7,8 +7,6 @@ slotNames = {
     "ShoulderSlot",
     "BackSlot",
     "ChestSlot",
-    "ShirtSlot",
-    "TabardSlot",
     "WristSlot",
     "HandsSlot",
     "WaistSlot",
@@ -20,5 +18,5 @@ slotNames = {
     "Trinket1Slot",
     "MainHandSlot",
     "SecondaryHandSlot",
-    "AmmoSlot"
+    "AmmoSlot",
 }
