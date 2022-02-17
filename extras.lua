@@ -18,5 +18,6 @@ slotNames = {
     "Trinket1Slot",
     "MainHandSlot",
     "SecondaryHandSlot",
+	"RangedSlot",
     "AmmoSlot",
 }

@@ -113,7 +113,7 @@ function WowSimsExporter:CreateWindow(generate)
     )
     frame:SetTitle("WowSimsExporter V" .. version .. "")
     frame:SetStatusText("Click 'Generate Data' to display exportable data")
-    frame:SetLayout("List")
+    frame:SetLayout("Flow")
     local jsonbox = AceGUI:Create("MultiLineEditBox")
     jsonbox:SetLabel("Copy and paste into the websites importer at https://wowsims.github.io/tbc/.")
     jsonbox:SetFullWidth(true)
@@ -136,6 +136,26 @@ function WowSimsExporter:CreateWindow(generate)
 		l_Generate()
 	end)
 	
+    local label = AceGUI:Create("Label")
+    label:SetText([[!THIS ADDON IS IN AN ALPHA STATE!
+As this is in a testing phase, the import button his hidden from the website to avoid issues with users not knowing where the addon is!
+
+To find the import button you can see it by going to any of the sims and adding ?debug to the URL. If there is a # in the URL the ?debug has to come first.
+
+This will add a import button to the top right of the page to the right of the report a feature button.
+
+
+
+
+]])
+	label:SetFullWidth(true)
+
+
+	local label2 = AceGUI:Create("Label")
+	label2:SetText("Generate Data from Equipped Gear")
+
+	frame:AddChild(label)
+	frame:AddChild(label2)
     frame:AddChild(button)
 	frame:AddChild(jsonbox)
 end
