@@ -3,12 +3,14 @@
 
 WowSimsExporter = LibStub("AceAddon-3.0"):NewAddon("WowSimsExporter", "AceConsole-3.0", "AceEvent-3.0")
 
-WowSimsExporter.Json = ""
+
+WowSimsExporter.Character = ""
+WowSimsExporter.Link = "https://wowsims.github.io/tbc/"
 
 local AceGUI = LibStub("AceGUI-3.0")
 local LibParse = LibStub("LibParse")
 
-local version = "1.2 (ALPHA)"
+local version = "1.3 (ALPHA)"
 
 local defaults = {
 	profile = {
@@ -37,35 +39,24 @@ local options = {
 	},
 }
 
-function WowSimsExporter:ParseUnfilteredCombatLog()
 
-end
-
-
-
-function WowSimsExporter:CreateGroupStructure()
-
-end
-
-
-function WowSimsExporter:CreateCharacterStructure(unit, gearIn)
+function WowSimsExporter:CreateCharacterStructure(unit)
     local name, realm = UnitFullName(unit)
     local locClass, engClass, locRace, engRace, gender, name, server = GetPlayerInfoByGUID(UnitGUID(unit))
     local level = UnitLevel(unit)
 
-    local character = {
+    self.Character = {
         name = name,
         realm = realm,
         race = engRace,
         class = engClass,
 		level = tonumber(level),
-        talents = self:CreateTalentEntry(),
-        gear = { 
-			items = gearIn 
-			} 
+        talents = "",
+		spec  ="",
+        gear = { items = {}} 
 	}
 
-    return character
+    return self.Character
 end
 
 function WowSimsExporter:CreateTalentEntry()
@@ -87,6 +78,34 @@ function WowSimsExporter:CreateTalentEntry()
     return table.concat(talents)
 end
 
+--{comparator = function(A,B,C) return A > B and A > C end, spec="affliction", class="warlock"},
+function WowSimsExporter:CheckCharacterSpec(class)
+
+	local class = class:lower()
+
+	local specs = self.specializations
+
+	T1 = GetNumTalents(1)
+	T2 = GetNumTalents(2)
+	T3 = GetNumTalents(3)
+
+	local spec = class --if something breaks, send the class as the spec
+
+	for i, character in ipairs(specs) do	
+		if character then				
+			if (character.class == class) then				
+				if (character.comparator(T1,T2,T3) and not character.single) then
+					spec = character.spec
+					break
+				elseif (character.single) then				
+					spec = character.spec				
+				end						
+			end
+		end
+	end
+	return spec
+end
+
 
 function WowSimsExporter:SlashCommand(input)
     if not input or input:trim() == "" then
@@ -101,9 +120,37 @@ function WowSimsExporter:SlashCommand(input)
     end
 end
 
+function WowSimsExporter:CreateCopyDialog(text)
+
+	local frame = AceGUI:Create("Frame")
+	frame:SetTitle("WSE Copy Dialog")
+    frame:SetStatusText("Use CTRL+C to copy link")
+    frame:SetLayout("Flow")
+	frame:SetWidth(400)
+	frame:SetHeight(100)
+	frame:SetCallback(
+        "OnClose",
+        function(widget)
+            AceGUI:Release(widget)
+        end
+    )
+
+	local editbox = AceGUI:Create("EditBox")
+    editbox:SetText(text)
+    editbox:SetFullWidth(true)
+    editbox:DisableButton(true)
+
+	editbox:SetFocus()
+	editbox:HighlightText()
+	
+	frame:AddChild(editbox)
+
+end
 
 function WowSimsExporter:CreateWindow(generate)
 
+	self:CreateCharacterStructure("player")
+	
     local frame = AceGUI:Create("Frame")
     frame:SetCallback(
         "OnClose",
@@ -114,29 +161,38 @@ function WowSimsExporter:CreateWindow(generate)
     frame:SetTitle("WowSimsExporter V" .. version .. "")
     frame:SetStatusText("Click 'Generate Data' to display exportable data")
     frame:SetLayout("Flow")
+
+
     local jsonbox = AceGUI:Create("MultiLineEditBox")
-    jsonbox:SetLabel("Copy and paste into the websites importer at https://wowsims.github.io/tbc/.")
+    jsonbox:SetLabel("Copy and paste into the websites importer!")
     jsonbox:SetFullWidth(true)
     jsonbox:SetFullHeight(true)
     jsonbox:DisableButton(true)
    
-
 	local function l_Generate()
-		WowSimsExporter.Json = WowSimsExporter:GetGearEnchantGems("player")
-		jsonbox:SetText(LibParse:JSONEncode(WowSimsExporter.Json)) 
+		WowSimsExporter.Character = WowSimsExporter:GetGearEnchantGems("player")
+		jsonbox:SetText(LibParse:JSONEncode(WowSimsExporter.Character)) 
 		jsonbox:HighlightText()
 		jsonbox:SetFocus()
+
+		frame:SetStatusText("Data Generated!")
 	end
+
+
 	if generate then l_Generate() end
 
     local button = AceGUI:Create("Button")
     button:SetText("Generate Data")
     button:SetWidth(200)
-	button:SetCallback("OnClick", function()
+	button:SetCallback("OnClick", function()		
 		l_Generate()
 	end)
 	
+	
+	local link = WowSimsExporter.Link..(WowSimsExporter.Character.class:lower()).."/?debug"
+
     local label = AceGUI:Create("Label")
+	label:SetFullWidth(true)
     label:SetText([[!THIS ADDON IS IN AN ALPHA STATE!
 As this is in a testing phase, the import button his hidden from the website to avoid issues with users not knowing where the addon is!
 
@@ -144,15 +200,15 @@ To find the import button you can see it by going to any of the sims and adding 
 
 This will add a import button to the top right of the page to the right of the report a feature button.
 
-
-
-
 ]])
-	label:SetFullWidth(true)
 
-
-	local label2 = AceGUI:Create("Label")
-	label2:SetText("Generate Data from Equipped Gear")
+	
+	local label2 = AceGUI:Create("InteractiveLabel")
+	label2:SetText("Click to copy: "..link.."\r\n")
+	label2:SetFullWidth(true)
+	label2:SetCallback("OnClick", function()		
+		WowSimsExporter:CreateCopyDialog(link)
+	end)
 
 	frame:AddChild(label)
 	frame:AddChild(label2)
@@ -162,6 +218,8 @@ end
 
 function WowSimsExporter:GetGearEnchantGems(type)
     local gear = {}
+
+	local slotNames = WowSimsExporter.slotNames
 
     for slotNum = 1, #slotNames do
         local slotId = GetInventorySlotInfo(slotNames[slotNum])
@@ -178,8 +236,11 @@ function WowSimsExporter:GetGearEnchantGems(type)
 
         end
     end
+	self.Character.spec = self:CheckCharacterSpec(self.Character.class)
+	self.Character.talents = self:CreateTalentEntry()
+	self.Character.gear.items = gear
 
-    return self:CreateCharacterStructure(type, gear)
+    return self.Character
 end
 
 function WowSimsExporter:ParseItemLink(itemLink)
@@ -209,7 +270,6 @@ function WowSimsExporter:OnInitialize()
     self:Print("WowSimsExporter v" .. version .. " Initialized. use /wse For Window.")
 
 end
-
 
 
 function WowSimsExporter:OnEnable()
