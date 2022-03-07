@@ -190,6 +190,7 @@
     <Folder Include="Libs\AceTimer-3.0\" />
     <Folder Include="Libs\CallbackHandler-1.0\" />
     <Folder Include="Libs\LibStub\" />
+    <Folder Include="Skins" />
   </ItemGroup>
   <Import Project="$(DevEnvDir)\Extensions\Tools\MSBuild\AddonStudio\Wow\3.0\WowAddonStudio.targets" />
   <!--
