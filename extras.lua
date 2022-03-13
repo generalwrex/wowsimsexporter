@@ -7,7 +7,9 @@ WowSimsExporter.supportedSims = {
 "hunter",
 "mage",
 "shaman",
-"priest"
+"priest",
+"rogue",
+"druid"
 }
 
 WowSimsExporter.slotNames = {
@@ -33,7 +35,7 @@ WowSimsExporter.slotNames = {
 
 
 WowSimsExporter.prelink = "https://wowsims.github.io/tbc/"
-WowSimsExporter.postlink = "/?debug"
+WowSimsExporter.postlink = ""
 WowSimsExporter.specializations = {
 
 	-- shaman
@@ -45,7 +47,7 @@ WowSimsExporter.specializations = {
 	{comparator = function(A,B,C) return C > A and C > B end, spec="survival", class="hunter",url="hunter"},
 	-- druid
 	{comparator = function(A,B,C) return A > B and A > C end, spec="balance", class="druid",url="balance_druid"},
-	{comparator = function(A,B,C) return B > A and B > C end, spec="feral", class="druid",url="feral_druid"},
+	--{comparator = function(A,B,C) return B > A and B > C end, spec="feral", class="druid",url="feral_druid"},
 	-- warlock
 	{comparator = function(A,B,C) return A > B and A > C end, spec="affliction", class="warlock",url="warlock"},
 	{comparator = function(A,B,C) return B > A and B > C end, spec="demonology", class="warlock", url="warlock"},
