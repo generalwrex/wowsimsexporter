@@ -10,7 +10,9 @@ WowSimsExporter.supportedSims = {
 "priest",
 "rogue",
 "druid",
-"warrior"
+"warrior",
+"warlock",
+"paladin"
 }
 
 WowSimsExporter.slotNames = {
@@ -51,7 +53,7 @@ WowSimsExporter.specializations = {
 	--{comparator = function(A,B,C) return B > A and B > C end, spec="feral", class="druid",url="feral_druid"},
 	-- warlock
 	{comparator = function(A,B,C) return A > B and A > C end, spec="affliction", class="warlock",url="warlock"},
-	{comparator = function(A,B,C) return B > A and B > C end, spec="demonology", class="warlock", url="warlock"},
+	{comparator = function(A,B,C) return B > A and B > C end, spec="demonology", class="warlock", url="warlock"},	
 	{comparator = function(A,B,C) return C > A and C > B end, spec="destruction",class="warlock",url="warlock"},
 	-- rogue
 	{comparator = function(A,B,C) return A > B and A > C end, spec="assassination", class="rogue", url="rogue"},
@@ -67,7 +69,8 @@ WowSimsExporter.specializations = {
 	-- paladin
 	{comparator = function(A,B,C) return true            end, spec="retribution", class="paladin"},
 	-- priest
-	{comparator = function(A,B,C) return true            end, spec="shadow", class="priest", url="shadow_priest"},
+	{comparator = function(A,B,C) return C > A and C > B end, spec="shadow", class="priest", url="shadow_priest"},
+	{comparator = function(A,B,C) return B > A and B > C end, spec="holy", class="priest", url="smite_priest"},
 }
 
 -- table extension contains
