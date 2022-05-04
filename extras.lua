@@ -52,9 +52,10 @@ WowSimsExporter.specializations = {
 	{comparator = function(A,B,C) return A > B and A > C end, spec="balance", class="druid",url="balance_druid"},
 	--{comparator = function(A,B,C) return B > A and B > C end, spec="feral", class="druid",url="feral_druid"},
 	-- warlock
-	{comparator = function(A,B,C) return A > B and A > C end, spec="affliction", class="warlock",url="warlock"},
-	{comparator = function(A,B,C) return B > A and B > C end, spec="demonology", class="warlock", url="warlock"},	
-	{comparator = function(A,B,C) return C > A and C > B end, spec="destruction",class="warlock",url="warlock"},
+	{comparator = function(A,B,C) return true end, spec="warlock", class="warlock",url="warlock"},
+	--{comparator = function(A,B,C) return B > A and B > C end, spec="demonology", class="warlock", url="affliction_warlock"},	
+	--{comparator = function(A,B,C) return B > A and B > C end, spec="demonology", class="warlock", url="demonology_warlock"},	
+	--{comparator = function(A,B,C) return C > A and C > B end, spec="destruction",class="warlock", url="destruction_warlock"},
 	-- rogue
 	{comparator = function(A,B,C) return A > B and A > C end, spec="assassination", class="rogue", url="rogue"},
 	{comparator = function(A,B,C) return B > A and B > C end, spec="combat", class="rogue", url="rogue"},
