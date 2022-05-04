@@ -9,7 +9,8 @@ WowSimsExporter.supportedSims = {
 "shaman",
 "priest",
 "rogue",
-"druid"
+"druid",
+"warrior"
 }
 
 WowSimsExporter.slotNames = {
